@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Header fragment starts here -->
+<head>
+<title>Edit Store Detail</title>
+</head>
+<head th:replace="fragments/header-includes :: headerFragment"></head>
+<!-- Header fragment ends here -->
+<body id="quiskResponsive">
+<div class="min-height" id="main">
+<!-- Collect the Header-menu nav links, forms, and other -->
+		<nav th:replace="fragments/header-menu :: navFragment"></nav>
+<!-- /.navbar-collapse -->
+		<!--start of Merchant Profile Summary navbar-->
+		<div th:replace="fragments/merchant-summary-profile-top-section :: merchantProfileFragment"></div>
+		<!--start of Merchant Profile Summary navbar collapse -->
+		<!--  Left-menu links -->
+	<div  class="row ah-prof-container">
+		<div class="quisk-left-container">
+			<nav th:replace="fragments/merchant-summary-profile-menu :: merchantProfileMenuFragment"></nav>
+		</div>
+		
+		<!--  Left-menu links collapse-->
+		<div class="quisk-right-container">
+		<div class="container quisk-container">
+		<div class="panel panel-default">
+		<div class="panel-heading">Edit Store Detail
+		</div>
+		<div class="panel-body">
+			<p id="default_message">Please edit the fields below as appropriate. Once finished, click Submit.</p>
+		<div class="col-md-12">
+			<!--Start of Error message-->
+			<div class="notifications error-msg-h" id="notifications" tabindex="-1">
+				<p class="search-validation-error" id="ErrorMessage" th:text="${ErrorMessage}"></p>
+			</div>
+			<!--End of error message-->
+			
+			<form class="form-horizontal" id="storeDetailEditForm" th:action="@{updateStoreDetails}" method="POST">
+			<input type="hidden" th:name="timeZone" id="timeZone" th:value="${merchantStoreDetail.timeZone}"/>
+			<input type="hidden" th:name="merchantId" id="merchantId" th:value="${merchantStoreDetail.merchantId}"/>
+			<input type="hidden" th:name="storeId" id="fiStoreId" th:value="${merchantStoreDetail.storeId}"/>
+			<input type="hidden" th:name="fiId" id="fiId" th:value="${merchantStoreDetail.fiId}"/>
+			<input type="hidden" id="invalidPostalCode" th:value="#{postal.code.invalid}"/>
+			<input type="hidden" id="storeNameRequired" th:value="#{store.name.required}"/>
+			<input type="hidden" id="fiStoreIdRequired" th:value="#{fi.storeid.required}"/>
+			<input type="hidden" id="postalCodeRequired" th:value="#{postal.code.required}"/>
+			<input type="hidden" id="addressRequired" th:value="#{merchant.address.required}"/>
+			<input type="hidden" id="cityRequired" th:value="#{merchant.city.required}"/>
+			<input type="hidden" id="stateRequired" th:value="#{merchant.state.required}"/>
+			<input type="hidden" id="countryRequired" th:value="#{merchant.country.required}"/>
+			<input type="hidden" id="timeZoneRequired" th:value="#{merchant.timeZone.required}"/>
+			<input type="hidden" id="categoryCodeRequired" th:value="#{merchant.category.code.required}"/>
+			<input type="hidden" id="merchantTypeRequired" th:value="#{merchant.type.required}"/>
+			<input type="hidden" id="storeStatusRequired" th:value="#{store.status.required}"/>
+			
+				<div class="form-group">
+				<div class="col-md-12" >
+					<label class="control-label col-md-3 " for="inputEmail1">Store Name:</label>
+					<div class="col-md-4"><input type="text" class="form-control" th:maxlength="#{id.max.length}" placeholder="Store Name" name="storeName" id="storeName_Id" th:value="${merchantStoreDetail.storeName}" /></div>
+				</div>
+				</div>
+				<div class="form-group">
+				<div class="col-md-12" >
+					<label class="control-label col-md-3 " for="inputEmail1">Store ID:</label>
+					<div class="col-md-4" ><input type="text" class="form-control"  th:maxlength="#{fi.id.max.length}" placeholder="Store ID" name="fiStoreId" id="fiStore_Id" th:value="${merchantStoreDetail.fiStoreId}" />
+					</div>	
+				</div>
+				</div>			
+				<div class="form-group">
+				<div class="col-md-12" >
+					<label class="control-label col-md-3" for="inputEmail1">Address 1:</label>
+					<div class="col-md-4" ><input type="text" class="form-control" th:maxlength="#{id.max.length}" placeholder="Address" name="address" id="address_Id" th:value="${merchantStoreDetail.address}" />
+					</div>
+				</div>
+				</div>	
+				<div class="form-group">
+				<div class="col-md-12" >
+					<label class="control-label col-md-3" for="inputEmail1">Address 2:</label>
+					<div class="col-md-4" ><input type="text" class="form-control" th:maxlength="#{id.max.length}" placeholder="Address 2" name="addressLine2" id="addressLine_Id" th:value="${merchantStoreDetail.addressLine2}" />
+					</div>
+				</div>
+				</div>
+				<div class="form-group">
+				<div class="col-md-12" >
+					<label class="control-label col-md-3" for="inputEmail1">City:</label>
+					<div class="col-md-4" ><input type="text" class="form-control" th:maxlength="#{id.max.length}" placeholder="City" name="city" id="city_Id" th:value="${merchantStoreDetail.city}" />
+					</div>
+				</div>
+				</div>
+				<div class="form-group">
+				<div class="col-md-12" >
+					<label class="control-label col-md-3" for="inputEmail1">State/Province:</label>
+					<div class="col-md-4" ><input type="text" class="form-control" th:maxlength="#{id.max.length}" placeholder="State" name="state" id="state_Id" th:value="${merchantStoreDetail.state}" />
+					</div>
+				</div>
+				</div>
+				<div class="form-group">
+				<div class="col-md-12" >
+					<label class="control-label col-md-3" for="inputEmail1">Zip/Postal Code:</label>
+					<div class="col-md-4" ><input type="text" class="form-control" placeholder="Zip/Postal" name="zipCode" id="postalCode_Id" th:value="${merchantStoreDetail.zipCode}" th:maxlength="#{zipcode.max.length}" />
+					</div>
+				</div>
+				</div>	
+				<div class="form-group">
+				<div class="col-md-12" >
+					<label class="control-label col-md-3" for="inputEmail1">Country:</label>
+					<div class="col-md-4">
+						<div class="dropdown">
+							<select class="form-control" id="nationality_Id" name="country">
+                        <option selected="selected" value="" id="defaultMerchantType" >	
+													Select Country</option>								
+								<option th:each="country : ${countriesList}" th:selected="${merchantStoreDetail.country==country.key}"
+										th:text="${country.value}" th:value="${country.key}">Country 
+								</option>
+							</select>
+						</div>
+					</div>
+					</div>
+				</div>		
+				<div class="form-group">
+				<div class="col-md-12" >
+					<label class="control-label col-md-3" for="inputEmail1">Time Zone:</label>
+					<div class="col-md-4" >
+						<div class="dropdown">
+							<select class="form-control" id="fiNetworkTimeZone_Id" name="timeZoneId">
+							<option selected="selected" value="" id="defaultMerchantType" >	
+													Select Time Zone</option> 
+								<option th:each="timeZoneInfo : ${timeZoneInfolist}" th:text="${timeZoneInfo.timeZoneDesc}"  th:selected="${merchantStoreDetail.timeZone==timeZoneInfo.timeZoneDesc}"
+									th:value="${timeZoneInfo.timeZoneId}">Time Zone</option> 
+								</select>
+						</div>
+					</div>
+				</div>	
+				</div>			
+				<div class="form-group">
+				<div class="col-md-12" >
+					<label class="control-label col-md-3" for="inputEmail1">Status:</label>
+					<div class="col-md-4" >
+						<div class="dropdown">
+							<select class="dropdown_merchant form-control" name="status" id ="status_Id" disabled="disabled">
+								<option value="ACTIVE" th:selected="${merchantStoreDetail.status == 'ACTIVE'}">ACTIVE</option>
+								<option value="INACTIVE" th:selected="${merchantStoreDetail.status == 'INACTIVE'}">INACTIVE</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				</div>	
+			
+			<div class="form-group">
+								<div class="col-md-8 pull-right">
+							<button class="btn btn-primary" type="submit"
+								id="merchantSubmitButton" disabled="disabled">Submit</button>
+							<a aria-expanded="true" class="" href="getStoreDetails">
+							<button	class="btn btn-default" type="button">Cancel</button></a>
+						</div>
+				</div>
+		
+			</form>
+			<div th:if="${SuccessMessage != null}"> 
+			<div style="display: block;" class="modal fade in" 
+				tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+				aria-hidden="false">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 id="myModalLabel" class="modal-title">Edit Store Details</h4>
+						</div>
+						<div class="modal-body">
+							
+								<p  class="notification notification-success" th:text="${SuccessMessage}"></p>
+							
+						</div>
+						<div class="modal-footer">
+						<a class="btn btn-primary" href="getStoreDetails">OK</a>
+							</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-backdrop fade in"></div>
+			</div>
+								
+							</div>
+		</div>
+		</div>
+			<div class="col-md-12 col-sm-12">
+					<nav class="search-btns">
+						<ul class="pager">
+							<li class="previous"><a href="backtoMerchantSearch"><span
+									aria-hidden="true"></span> Back to Search Results</a></li>
+							<li class="next"><a href="merchantSearch">New
+									Search <span aria-hidden="true"></span>
+							</a></li>
+						</ul>
+					</nav>
+				</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<div th:replace="fragments/footer :: footer"></div>
+<script src="../../../resources/js/add-store.js" th:src="@{/resources/js/add-store.js}"></script>
+<script src="../../../resources/js/edit-store-detail.js" th:src="@{/resources/js/edit-store-detail.js}"></script>
+<script src="../../../resources/js/disabled-features.js" th:src="@{/resources/js/disabled-features.js}"></script>
+</body>
+</html>

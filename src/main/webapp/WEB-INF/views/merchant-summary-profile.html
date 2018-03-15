@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Header fragment starts here -->
+<head>
+<title>Merchant Detail</title>
+</head>
+<head th:replace="fragments/header-includes :: headerFragment"></head>
+<!-- Header fragment ends here -->
+<body id="quiskResponsive">
+<div class="min-height" id="main">
+<!-- Collect the Header-menu nav links, forms, and other -->
+		<nav th:replace="fragments/header-menu :: navFragment"></nav>
+<!-- /.navbar-collapse -->
+		<!--start of Merchant Profile Summary navbar-->
+		<div th:replace="fragments/merchant-summary-profile-top-section :: merchantProfileFragment"></div>
+		<!--start of Merchant Profile Summary navbar collapse -->
+		<!--  Left-menu links -->
+	<div  class="row ah-prof-container">
+		<div class="quisk-left-container">
+			<nav th:replace="fragments/merchant-summary-profile-menu :: merchantProfileMenuFragment"></nav>
+		</div>
+		
+		<!--  Left-menu links collapse-->
+		<div class="quisk-right-container">
+		<div class="container quisk-container">
+		<div class="panel panel-default">
+		<div class="panel-heading">Merchant Detail
+			<span th:unless="${#authorization.expression('hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)')}">
+				<a href="editMerchantSummaryProfile" type="button" class="btn btn-default btn-sm pull-right"> Edit </a>
+			</span>
+			<span sec:authorize="hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)">
+				<a href="editMerchantSummaryProfile" type="button" class="btn btn-default btn-sm pull-right dc" disabled="disabled"> Edit </a>
+			</span>
+		</div>
+		<div class="panel-body">
+		<div class="col-md-6 col-sm-12">
+			<input type="hidden" th:name="fiMerchantId" id="fiMerchantId" th:value="${profileSummary.merchantId}"/>
+			<input type="hidden" th:name="fiId" id="fiIdId" th:value="${profileSummary.fiId}"/>
+			<input type="hidden" th:name="merchantName"  id="merchantNameId" th:value="${profileSummary.merchantName}" />
+			<input type="hidden" th:name="email" id="emailId" th:value="${profileSummary.email}"/>
+			<input type="hidden" th:name="phoneNumber" id="phoneNumberId" th:value="${profileSummary.phoneNumber}"/>
+			<input type="hidden" th:name="address" id="addressId" th:value="${profileSummary.address}"/>
+			<input type="hidden" th:name="addressLine2" id="addressLineId" th:value="${profileSummary.addressLine2}"/>
+			<input type="hidden" th:name="city" id="cityId" th:value="${profileSummary.city}"/>
+			<input type="hidden" th:name="state" id="stateId" th:value="${profileSummary.state}"/>
+			<input type="hidden" th:name="postalCode" id="postalCodeId" th:value="${profileSummary.postalCode}"/>
+			<input type="hidden" th:name="country" id="countryId" th:value="${profileSummary.country}"/>
+			<input type="hidden" th:name="timeZoneId" id="timeZoneId" th:value="${profileSummary.timeZoneId}"/>
+			<input type="hidden" th:name="merchantType" id="merchantTypeId" th:value="${profileSummary.merchantType}"/>
+			<input type="hidden" th:name="status" id="statusId" th:value="${profileSummary.status}"/>
+			<input type="hidden" th:name="merchantCategoryCode" id="merchantCategoryCodeId" th:value="${profileSummary.merchantCategoryCode}"/>
+			<input type="hidden" th:name="fiMerchantId" id="fiMerchantId" th:value="${profileSummary.fiMerchantId}"/>
+			<input type="hidden" th:name="merchantId" id="merchantId" th:value="${profileSummary.merchantId}"/>
+			<input type="hidden" id="reasonRequired" th:value="#{merchant.reason.required}" />
+			
+			
+			<table class="table">
+				<tbody>
+				<tr>
+						<td width="164"><strong>Merchant ID:</strong></td>
+						<td width="202"> <p th:text="${profileSummary.fiMerchantId}" ></p></td>
+						
+					</tr>
+					<tr>
+						<td width="164"><strong>Merchant Contact Email:</strong></td>
+						<td width="202"> <p th:text="${profileSummary.email}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Contact Phone:</strong></td>
+						<td><p th:text="${profileSummary.phoneNumber}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Address 1:</strong></td>
+						<td><p th:text="${profileSummary.address}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Address 2:</strong></td>
+						<td><p th:text="${profileSummary.addressLine2}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>City:</strong></td>
+						<td><p th:text="${profileSummary.city}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>State/Province:</strong></td>
+						<td><p th:text="${profileSummary.state}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Zip/Postal Code:</strong></td>
+						<td><p th:text="${profileSummary.postalCode}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Country:</strong></td>
+						<td><p th:text="${profileSummary.country}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Time Zone:</strong></td>
+						<td><p th:text="${profileSummary.timeZone}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Merchant Category Code:</strong></td>
+						<td><p th:text="${profileSummary.merchantCategoryCode +' '+ profileSummary.merchantCategoryDesc}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Merchant Type:</strong></td>
+						<td><p th:text="${profileSummary.merchantType}" ></p></td>
+					</tr>
+				     <tr>
+						<td><strong>Status:</strong></td>
+						<td><span>
+								<span th:unless="${#authorization.expression('hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)')}">
+										<span th:if="${profileSummary.status == 'DELETED' }" th:text="CLOSED" id="merchantStatus"></span>
+										<span th:unless="${profileSummary.status == 'DELETED' }" th:text="${profileSummary.status}" id="merchantStatus"></span>
+										<span th:if="${profileSummary.status == 'ACTIVE'}" class="marg-l-10">
+											<button type="button" class="btn btn-default" id="statusButton"
+											data-toggle="modal" data-backdrop="static" data-target="#activeandinactivemodal"
+											data-whatever="@mdo">INACTIVE</button>
+										</span>
+										<span th:if="${profileSummary.status == 'INACTIVE'}">
+											<button type="button" class="btn btn-default" id="statusButton"
+											data-toggle="modal" data-backdrop="static" data-target="#activeandinactivemodal"
+											data-whatever="@mdo">ACTIVE</button>
+										</span>
+									</span>
+									<span sec:authorize="hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)">
+										<span th:if="${profileSummary.status == 'DELETED' }" th:text="CLOSED" id="merchantStatus"></span>
+										<span th:unless="${profileSummary.status == 'DELETED' }" th:text="${profileSummary.status}" id="merchantStatus"></span>
+										<span th:if="${profileSummary.status == 'ACTIVE'}" class="marg-l-10">
+											<button type="button" class="btn btn-default" id="statusButton" disabled="disabled"
+											data-toggle="modal" data-backdrop="static" data-target="#activeandinactivemodal"
+											data-whatever="@mdo">INACTIVE</button>
+										</span>
+										<span th:if="${profileSummary.status == 'INACTIVE'}">
+											<button type="button" class="btn btn-default" id="statusButton" disabled="disabled"
+											data-toggle="modal" data-backdrop="static" data-target="#activeandinactivemodal"
+											data-whatever="@mdo">ACTIVE</button>
+										</span>
+									</span>
+							</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		</div>
+				<div class="col-md-12 col-sm-12">
+					<nav class="search-btns">
+						<ul class="pager">
+							<li class="previous"><a href="backtoMerchantSearch"><span
+									aria-hidden="true"></span> Back to Search Results</a></li>
+							<li class="next"><a href="merchantSearch">New
+									Search <span aria-hidden="true"></span>
+							</a></li>
+						</ul>
+					</nav>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		
+		<div style="display: none;" class="modal fade" id="activeandinactivemodal"
+			tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 id="myModalLabel" class="modal-title">Merchant Status</h4>
+					</div>
+					<div class="modal-body" id="changeMerchantStatusBody">
+						<div class="notifications error-msg-h" id="notifications" tabindex="-1">
+							<p  class="notification notification-critical" id="changeMerchantStatusSuccess" ></p>
+						</div>
+						<span th:if="${profileSummary.status == 'ACTIVE'}">
+							<input type="hidden" th:name="newStatus" id="newStatus" th:value="INACTIVE"/>
+							<p class="padd-none">Do you want to make this merchant Inactive?</p>
+						</span>
+						<span th:if="${profileSummary.status == 'INACTIVE'}">
+						<input type="hidden" th:name="newStatus" id="newStatus" th:value="ACTIVE"/>
+							<p class="padd-none">Do you want to make this merchant Active?</p>
+						</span>
+							<label for="exampleInputUserName1">Enter reason:</label> 
+							<textarea name="reasonChangeStatus" id="changeMerchantStatusComment" class="form-control"  th:maxlength="#{max.length.for.reason}" ></textarea>
+					</div>
+					<div class="modal-body" id="changeStatusSuccessBody" style="display: none;">
+					</div>
+					<div class="modal-footer" id="changeStatusMerchantDivId">
+						<form th:action="@{changeMerchantStatus}">
+						</form>
+						<button id="changeMerchantStatusSubmit" class="btn btn-primary" type="button">Yes</button>
+						<button data-dismiss="modal" class="btn btn-default clearFieldData" type="button">No</button>
+					</div>
+					<div class="modal-footer" id="changeStatusMerchantHiddenDivId" style="display: none;">
+						<form th:action="@{merchantProfile}" method="POST">
+								<input type="hidden" th:name="merchantId" th:value="${profileSummary.merchantId}"/>
+													<input type="hidden" th:name="fiMerchantId" th:value="${profileSummary.fiMerchantId}"/>
+													<input type="hidden" th:name="merchantName" th:value="${profileSummary.merchantName}"/>
+													<input type="hidden" th:name="email" th:value="${profileSummary.email}"/>
+													<input type="hidden" th:name="merchantType" th:value="${profileSummary.merchantType}"/>
+													<input type="hidden" th:name="status" th:value="${profileSummary.status}"/>
+													<input type="hidden" th:name="fiId" th:value="${profileSummary.fiId}"/>
+													<input type="submit"  value="OK" class="btn btn-primary" />
+						</form>
+					</div>
+					
+					
+				</div>
+			</div>
+		</div>
+
+		
+<div th:replace="fragments/footer :: footer"></div>
+<script src="../../../resources/js/merchant-search.js" th:src="@{/resources/js/merchant-search.js}"></script>
+<script src="../../../resources/js/disabled-features.js" th:src="@{/resources/js/disabled-features.js}"></script>
+</body>
+</html>

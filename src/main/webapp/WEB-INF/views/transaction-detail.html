@@ -1,0 +1,155 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Header fragment starts here -->
+<head>
+<title>Transaction Details</title>
+</head>
+<head th:replace="fragments/header-includes :: headerFragment"></head>
+<!-- Header fragment ends here -->
+<body id="quiskResponsive">
+	<div id="main" class="ah-search-container min-height" style="margin-top:83px; padding-left:0px; padding-right:0px;">
+		<!-- Collect the Header-menu nav links, forms, and other -->
+		<nav th:replace="fragments/header-menu :: navFragment"></nav>
+				
+			 <div class="panel-group pad-left-right20">
+				<div class="panel panel-default">
+					<div class="panel-heading">Transaction Details</div>
+					<div class="panel-body">
+						<div class="merchant-prof-menu">
+							<select aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" class="form-control select-workqueue" type="button" id="viewProfileDropDownId" >
+   					 			<option disabled="disabled" selected="selected" id="merchant_profile_default_option">Select Merchant's Profile</option>
+   					 			<option>Merchant Summary</option>
+   						 	</select>
+ 				 		</div>
+						<div class="col-md-12">
+							<p class="trans-dtl-p"><strong class="width-200">Merchant Name:</strong><span class="tran-values" th:text="${transactionEntityName}"></span></p>
+							<p class="trans-dtl-p"><strong class="width-200">Merchant ID:</strong><span class="tran-values" th:text="${originalTransaction.transactingEntityId}"></span></p>
+							<p class="trans-dtl-p"><strong class="width-200">Transaction ID:</strong><span class="tran-values" th:text="${originalTransaction.transactionId}"></span></p>
+							<p class="trans-dtl-p"><strong class="width-200">Authorization Code:</strong><span class="tran-values" th:text="${originalTransaction.authCode}"></span></p>
+							<p class="trans-dtl-p"><strong class="width-200">Original Transaction ID:</strong><span class="tran-values" th:text="${originalTransaction.refTransactionId}"></span></p>
+							<p class="trans-dtl-p"><strong class="width-200">Date/Time Created:</strong><span class="tran-values" th:text="${originalTransaction.formattedTransactionDate}"></span></p>
+							<p class="trans-dtl-p"><strong class="width-200"> Transaction Description:</strong><span class="tran-values" th:text="${originalTransaction.transactionDescription}"></span></p>
+							<p class="trans-dtl-p"><strong class="width-200">Type:</strong><span class="tran-values" th:text="${originalTransaction.transactionType}"></span></p>
+							<p class="trans-dtl-p"><strong class="width-200">Amount:</strong><span class="tran-values" th:text="${currency+' '+originalTransaction.formattedTransactionAmount}"></span></p>
+						</div>
+					</div>
+				</div>
+
+
+				<!--start of related transactions panel -->
+			<div id="accordion" class="mrg-top">
+				<div class="panel panel-default" id="panel1">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a class="" data-toggle="collapse" data-target="#collapseOne"
+								href="#collapseOne" aria-expanded="true">Related
+								Transactions </a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in"
+						aria-expanded="true">
+						<div class="panel-body">
+							<div id="demo">
+								<div class="dataTables_wrapper no-footer" id="example_wrapper">
+										<table cellspacing="0" cellpadding="0" border="0"
+											aria-describedby="example_info" role="grid"
+											class="display dataTable no-footer"
+											id="TransactionDetailTable">
+											<thead>
+												<tr role="row">
+													<th aria-label="Engine: activate to sort column ascending"
+														style="width: 132px;" colspan="1" rowspan="1"
+														aria-controls="example" tabindex="0" class="sorting">Transaction
+														ID</th>
+													<th aria-label="Engine: activate to sort column ascending"
+														style="width: 150px;" colspan="1" rowspan="1"
+														aria-controls="example" tabindex="0" class="sorting">Authorization
+														Code</th>
+													<th
+														aria-label="Browser: activate to sort column descending"
+														style="width: 153px;" colspan="1" rowspan="1"
+														aria-controls="example" tabindex="0" class="sorting_asc">Date/Time
+														Created</th>
+													<th aria-sort="ascending"
+														aria-label="Platform: activate to sort column ascending"
+														style="width: 156px;" colspan="1" rowspan="1"
+														aria-controls="example" tabindex="0" class="sorting">Description</th>
+													<th aria-label="Version: activate to sort column ascending"
+														style="width: 140px;" colspan="1" rowspan="1"
+														aria-controls="example" tabindex="0"
+														th:text="${'Debit ('+currency+')'}" class="center sorting"></th>
+													<th aria-label="Grade: activate to sort column ascending"
+														style="width: 122px;" rowspan="1" aria-controls="example"
+														tabindex="0" class="center sorting"
+														th:text="${'Credit ('+currency+')'}"></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr class="odd" role="row"
+													th:each="transaction,iterationStatus : ${relatedTransactions}"
+													th:unless="${relatedTransactions == null}">
+													<td class="" id="showTransactionId"><a
+														th:text="${transaction.transactionId}"
+														th:value="${iterationStatus.count}"
+														href="javascript: void(0)"></a>
+														<div style="display: none;">
+													<form th:action="@{transactionSummary}" method="POST" th:id="'transactionSearchId' + ${iterationStatus.count}" >
+														<input type="hidden" th:name="transactionId" th:value="${transaction.transactionId}"/>
+														<input type="hidden" th:name="refTransactionId" th:value="${transaction.refTransactionId}"/>
+                                                       <input type="hidden" th:name="transactingEntityFiId" th:value="${transactionEntityFiId}"/>
+														<input type="hidden" th:name="transactingEntityName" th:value="${transactionEntityName}"/>														<input type="submit" value="" />
+													</form>
+													</div>
+														</td>
+													<td class="" th:text="${transaction.authCode}"></td>
+													<td class=""
+														th:text="${transaction.formattedTransactionDate}"></td>
+													<td class=""
+														th:text="${transaction.transactionDescription}"></td>
+													<td class=""
+														th:if="${transaction.transactionType == 'DEBIT'}"
+														th:text="${'-'+transaction.formattedTransactionAmount}"></td>
+													<td class=""
+														th:unless="${transaction.transactionType == 'DEBIT'}"></td>
+													<td class=""
+														th:if="${transaction.transactionType == 'CREDIT'}"
+														th:text="${transaction.formattedTransactionAmount}"></td>
+													<td class=""
+														th:unless="${transaction.transactionType == 'CREDIT'}"></td>
+												</tr>
+											</tbody>
+										</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-12 col-sm-12">
+					<nav class="search-btns">
+						<ul class="pager">
+							<li class="previous"><a href="backtoTransactionSearch"><span
+									aria-hidden="true"></span> Back to Search Results</a></li>
+							<li class="next"><a href="transactionSearch">New
+									Search <span aria-hidden="true"></span>
+							</a></li>
+						</ul>
+					</nav>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+		<div style="" aria-expanded="true" id="collapseTwo" class="panel-collapse collapse in">
+			<div class="panel-body">
+				<div id="demo"></div>
+			</div>
+		</div>
+		
+				<div id="viewProfileDisplayOverlay"></div>
+	</div>
+	<div th:replace="fragments/footer :: footer"></div>
+	<script src="../../../resources/js/disabled-features.js" th:src="@{/resources/js/disabled-features.js}"></script>
+	<script src="../../../resources/js/disabled-features.js" th:src="@{/resources/js/jquery.maskMoney-min.js}"></script>
+	<script src="../../../resources/js/transaction-detail.js" th:src="@{/resources/js/transaction-detail.js}"></script>
+</body>
+</html>

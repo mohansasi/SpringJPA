@@ -1,0 +1,38 @@
+<!-- /* merchant summary Profile Left menu section for Quisk starts here */-->
+
+<nav class="fixed-nav-bar position-fix" id="merchantProfileMenuFragment" th:fragment="merchantProfileMenuFragment">
+	<a id="SummaryProfile" class="list-group-item active" href="merchantSummaryProfile">Summary Profile</a>
+	<ul>
+		<li class="list-group-item left-menu-active" style="display: none;" id="editMerchantSummaryProfile">
+	    	<span class="glyphicon glyphicon-chevron-right"></span>
+	    	<a href="javascript: void(0)">Edit Merchant Details</a>
+	    </li>
+  	</ul> 
+	<a id="StoreTerminal" class="list-group-item" href="merchantStoreList" >Store</a>  
+	<ul>
+		<li class="list-group-item left-menu-active" style="display: none;" id="addStore">
+	    	<span class="glyphicon glyphicon-chevron-right"></span>
+	    	<a href="javascript: void(0)">Add Store</a>
+	    </li>
+  	</ul>
+  	<ul>
+		<li class="list-group-item left-menu-active" style="display: none;" id="editStoreDetail">
+	    	<span class="glyphicon glyphicon-chevron-right"></span>
+	    	<a href="javascript: void(0)">Edit Store Detail</a>
+	    </li>
+  	</ul> 
+  	<ul>
+		<li class="list-group-item" style="display: none;" id="terminal">
+	    	<span class="glyphicon glyphicon-chevron-right"></span>
+	    	<a href="terminalList" style="color: white;">Terminal</a>
+	<ul class="sub-list">
+		<li class="list-group-item left-menu-active" style="display: none;" id="terminalEdit">
+	    	<span class="glyphicon glyphicon-chevron-right"></span>
+	    	<a href="javascript: void(0)">Edit Terminal Detail</a>
+	    </li>
+  	</ul>
+	    </li>
+  	</ul> 
+	<a id="FeesLimit" class="list-group-item" disabled="disabled" >Fees Limit</a>
+	<a id="AuditLog" class="list-group-item" href="merchantAuditLog">Audit Log</a>
+</nav>

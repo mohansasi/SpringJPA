@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Header fragment starts here -->
+<head>
+<title>Fees &amp; Tax</title>
+</head>
+<head th:replace="fragments/header-includes :: headerFragment"></head>
+<!-- Header fragment ends here -->
+
+<body id="quiskResponsive">
+
+
+		
+			<div id="main" class="ah-prof-container-new min-height">
+		<!-- Collect the nav links, forms, and other -->
+		<nav th:replace="fragments/header-menu :: navFragment"></nav>
+		<!-- /.navbar-collapse -->
+
+		<!-- start of Fees & Tax Message panel-->
+		<nav class="navbar navbar-default ah-summery-prof-nav" id="" >
+			<div id="bs-example-navbar-collapse-1">
+				<div class="menu-heading">
+					<h2 class="search-page-heading">Fees &amp; Tax</h2>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="ah-search-container min-height" style="margin-top: 146px;">
+		<div class="panel-group pd-left0" id="accordion">
+
+		<input type="hidden" th:value="${adminUserData.entityTypeId}" id="userRoleId" />
+		<form class="form-horizontal" th:action="@{feesTaxPost}" method="POST" id="dropdownsForm">
+			
+			<div class="form-group" >
+			<div th:if="${adminUserData.entityTypeId} == 0">
+				<div class="col-xs-12 col-sm-12"><p>Please select a Network and FI from the dropdowns.</p></div>
+			</div>
+			<div th:if="${adminUserData.entityTypeId} == 5">
+				<div class="col-xs-12 col-sm-12"><p>Please select an FI from the dropdown.</p></div>
+			</div>
+						<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 0">
+							
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-3 control-label">Network:
+								</label>
+								<div class="col-xs-6 col-sm-5" id="dropdown_network_id">
+									<div class="dropdown">
+										<select class="dropdown_network form-control" name="networkId" id = "dropdown_network">
+												<option selected="selected" value="" id="defaultFINetwork">	
+													All Networks<span class="caret"></span>
+												</option>
+												<option th:each="entityInfo : ${entityInfos}"
+													th:text="${entityInfo.entityName}" th:value="${entityInfo.entityId}"  th:selected="${networkId==entityInfo.entityId}" >Network Name 
+												</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-6 col-sm-4 fee-tax" th:if="${adminUserData.entityTypeId} == 0">
+							<div class="form-group" id="dropdown_finetwork_fi_id">
+								<label for="inputEmail3" class="col-sm-3 control-label">FI:
+								</label>
+								<div class="col-xs-6 col-sm-5">
+									<div class="dropdown">
+										<span th:if="${fis!= null}" >
+											<select id="dropdown_fi" class="dropdown_fi form-control" name="fiId">
+												<option selected="selected" value="" id="defaultFI" >
+													Select FI<span class="caret"></span>
+												</option>
+												<option th:each="fi : ${fis}"
+													th:text="${fi.entityName}" th:value="${fi.entityId}" th:selected="${fiId==fi.entityId}" >FI Name 
+												</option>
+											</select>
+										</span>
+										<span th:if="${fis== null}" >
+											<select id="dropdown_fi" class="dropdown_fi form-control" name="fiId">
+												<option selected="selected" value="">
+													Select FI<span class="caret"></span>
+												</option>
+											</select>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 5">
+							<div class="form-group" id="dropdown_fi_id">
+								<label for="inputEmail3" class="col-sm-1 control-label">FI:
+								</label>
+								<div class="col-xs-6 col-sm-5">
+									<div class="dropdown">
+										<select class="dropdown_fi form-control" name="fiId" id ="dropdown_fi">
+											<option selected="selected" value="" id="defaultFI" >
+												Select FI<span class="caret"></span>
+											</option>
+											<option th:each="entityInfo : ${entityInfos}"
+												th:text="${entityInfo.entityName}" th:value="${entityInfo.entityId}" th:selected="${fiId==entityInfo.entityId}" >FI Name
+												<input type="hidden" name="entityIds"  th:field="${entityInfo.entityId}"/>
+											</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			
+			
+			<div class="panel panel-default">
+			<div class="panel-heading">Fee Table List
+			<span th:unless="${#authorization.expression('hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)')}">
+				<a href="#" type="button" class="btn btn-default btn-sm pull-right"> Add Fee Table</a>
+			</span>
+			<span sec:authorize="hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)">
+				<a href="#" type="button" class="btn btn-default btn-sm pull-right dc" disabled="disabled"> Add Fee Table</a>
+			</span>
+			</div>
+			
+			<div class="panel-body">
+				<div class="col-md-12 col-sm-12">
+					<table cellspacing="0" cellpadding="0" border="0"
+					id="feeListTable" class="display dataTable no-footer"
+					role="grid" aria-describedby="example_info">
+					<thead>
+					<tr role="row">
+						<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" 
+							colspan="1" aria-label="Browser: activate to sort column descending">Fee Table Name</th>
+						<th class="sorting_asc " tabindex="0" aria-controls="example"
+							rowspan="1" colspan="1"	aria-label="Engine: activate to sort column ascending"
+							aria-sort="ascending">Fee Table Description</th>
+						<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1"
+							aria-label="Platform: activate to sort column ascending">Last Modified</th>
+					</tr>
+					</thead>                          
+					<tbody>
+						<tr class="odd" role="row"
+							th:each="fiFee,iterationStatus : ${fiFeeList}"
+							th:unless="${fiFeeList == null}">
+							<td><a th:text="${fiFee.feeTableName}" href="javascript: void(0)"></a>
+							</td>
+							<td th:text="${fiFee.feeTableDescription}"></td>
+							<td th:text="${fiFee.lastModifiedTime}"></td>
+						</tr> 
+					</tbody>
+					</table>
+				</div>
+			</div>
+		
+		</div>
+		</div>
+		</div>
+				</div>
+	<div th:replace="fragments/footer :: footer"></div>
+	<script src="../../../resources/js/fees-tax.js" th:src="@{/resources/js/fees-tax.js}"></script>
+	<script src="../../../resources/js/disabled-features.js" th:src="@{/resources/js/disabled-features.js}"></script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Header fragment starts here -->
+<head>
+<title>Audit Log</title>
+</head>
+<head th:replace="fragments/header-includes :: headerFragment"></head>
+<!-- Header fragment ends here -->
+
+<body id="quiskResponsive">
+	<div class="ah-prof-container-new min-height" id="main">
+		<!-- Collect the Header-menu nav links, forms, and other -->
+		<nav th:replace="fragments/header-menu :: navFragment"></nav>
+		<!-- /.navbar-collapse -->
+		<!--start of Merchant Profile Summary navbar-->
+		<div th:replace="fragments/merchant-summary-profile-top-section :: merchantProfileFragment"></div>
+		<!--start of Merchant Profile Summary navbar collapse -->
+		<!--  Left-menu links -->
+		<div class="row ah-prof-container">
+			<div class="quisk-left-container">
+				<nav th:replace="fragments/merchant-summary-profile-menu :: merchantProfileMenuFragment"></nav>
+			</div>
+			<!--  Left-menu links collapse-->
+
+			<!-- main content-->
+			<!-- main area -->
+			<div class="quisk-right-container">
+		     <div class="container quisk-container">
+				<div class="panel panel-default">
+					<div class="panel-heading new-acc-heading">
+						<h4 class="panel-title mrg-left"> Audit Log Search</h4>
+       					 <div class="pull-left">
+       					  	<a href="#" data-perform="panel-collapse" class="plus-min pull-left"><span class="fa fa-plus" id="collapseExpandIcon"></span></a> 
+       					 </div>
+					</div>
+					<div class="panel-wrapper collapse" id="auditLogSearchbody">
+					<div class="panel-body">
+							<p>
+								You can conduct a search by date range and/or admin email address. The results will appear in the Audit Log table below.
+							</p>
+							<p><b class="search-range">Note:</b> Please provide date ranges within the last 12 months only.</p>
+							<div class="notifications error-msg-h" id="notifications" tabindex="-1">
+								<p class="search-validation-error" id="ErrorMessage"
+									th:text="${ErrorMessage}"></p>
+							</div>
+							<p class="search-range">Search by Date Range</p>
+							<form class="form-horizontal" id="SearchForm" th:action="@{merchantAuditLogPost}" method="POST" >
+							<input type="hidden" id="invalidStartDate" th:value="#{startDate.required}"/>
+							<input type="hidden" id="invalidEndDate" th:value="#{endDate.required}"/>
+							<input type="hidden" id="DataRequiredForSearch" th:value="#{audit.log.date.or.email.required}"/>
+							<input type="hidden" id="invalidEmailId" th:value="#{audit.log.email.required}"/>
+							<input type="hidden" id="invalidDateDiff" th:value="#{audit.log.date.diff.validation}"/>
+							<input type="hidden" id="fromSearch" th:value="${fromSearch}"/>
+							<input type="hidden" id="isReset" name="isReset" th:value="${isReset}"/>
+							
+								<div class="row">
+									<div class="col-xs-6 col-sm-4">
+										<div class="form-group">
+											<label class="col-sm-4 control-label search-range" for="inputEmail1">From:</label>
+											<div class="col-xs-9 col-sm-5" th:if="${fromSearch== true}">
+												<input type="text" placeholder="From Date"
+													id="auditLogStartDate" readonly="readonly" name="startDate" th:value="${merchantAuditLogSearchRequest.startDate}"
+													class="form-control"></input>
+											</div>
+											<div class="col-xs-9 col-sm-5" th:unless="${fromSearch== true}">
+												<input type="text" placeholder="From Date"
+													id="auditLogStartDate" readonly="readonly" name="startDate" th:value="${merchantAuditLogSearchRequest.startDate}"
+													class="form-control"></input>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-6 col-sm-4">
+										<div class="form-group">
+											<label class="col-xs-1 control-label search-range" for="inputEmail1">To:</label>
+											<div class="col-xs-9 col-sm-5" th:if="${fromSearch== true}">
+												<input type="text" placeholder="To Date"
+													id="auditLogEndDate" readonly="readonly" name="endDate" th:value="${merchantAuditLogSearchRequest.endDate}"
+													class="form-control"></input>
+											</div>
+											<div class="col-xs-9 col-sm-5" th:unless="${fromSearch== true}">
+												<input type="text" placeholder="To Date"
+													id="auditLogEndDate" readonly="readonly" name="endDate" th:value="${merchantAuditLogSearchRequest.endDate}"
+													class="form-control"></input>
+											</div>
+										</div>
+									</div>
+								</div>
+								<p class="search-range">Search by Email Address</p>
+								<div class="row border-bottom ">
+									<div class="col-xs-6 col-sm-4">
+										<div class="form-group">
+											<label for="inputEmail2" class="col-sm-4 control-label search-range">Changed by: </label>
+											<div class="col-xs-9 col-sm-5" th:if="${fromSearch== true}">
+												<input type="text" class="form-control" id="auditLogEmailId" name="performedBy" th:value="${merchantAuditLogSearchRequest.performedBy}"
+													placeholder="Email Address"></input>
+											</div>
+											<div class="col-xs-9 col-sm-5" th:unless="${fromSearch== true}">
+												<input type="text" class="form-control" id="auditLogEmailId" name="performedBy" th:value="${merchantAuditLogSearchRequest.performedBy}"
+													placeholder="Email Address"></input>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-6 col-sm-4"></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-6 col-sm-4">
+										<div class="form-group">
+											<label for="inputEmail2" class="col-sm-4 control-label search-range"></label>
+											
+											<div class="col-xs-9 col-sm-5 width170">
+												<button type="submit" class="btn btn-primary" id="auditLogSubmit">Search</button>
+												<button type="button" class="btn btn-default" id="resetAuditLogForm">Reset</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-6 col-sm-4">
+										
+									</div>
+										
+								</div>
+							</form>
+						<!-- end of audit lof form -->
+					</div><!-- Panel body -->
+					</div>
+				</div>
+				<!-- new panel -->
+				<div class="bs-example">
+					<div id="accordion">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">Audit Log</h4>
+							</div>
+							<div class="panel-body" id="audit-div">
+							<div class="col-md-12 mrg-btm15">
+							<form class="form-horizontal" method="POST"
+								th:action="@{merchantAuditLogPost}">
+								<label class="col-sm-1 control-label mth-drop-down"
+									for="inputEmail3">Month:</label>
+								<div class="col-sm-2">
+									<div class="dropdown">
+										<select class="form-control" id="months" name="monthId" >
+											<option value="">Please Select</option>
+											<option th:each="month : ${months}" th:text="${month.value}" th:selected="${currentMonth==month.key}" 
+												th:value="${month.key}">Month</option>
+										</select>
+									</div>
+								</div>
+								&nbsp;&nbsp;
+								<button type="submit" class="btn btn-primary">Search</button>
+							</form>
+							</div>
+							
+							<div id="demo">
+								<div id="example_wrapper" class="dataTables_wrapper no-footer">
+									<table cellspacing="0" cellpadding="0" border="0"
+										id="AuditLogTable" class="display dataTable no-footer"
+										role="grid" aria-describedby="example_info">
+										<thead>
+											<tr role="row">
+												<th class="sorting_asc width-170" tabindex="0" aria-controls="example"
+													rowspan="1" colspan="1"
+													aria-label="Engine: activate to sort column ascending"
+													aria-sort="ascending">Date/Time</th>
+												<th class="sorting" tabindex="0" aria-controls="example"
+													rowspan="1" colspan="1"
+													aria-label="Browser: activate to sort column descending">Action</th>
+												<th class="sorting" tabindex="0" aria-controls="example"
+													rowspan="1" colspan="1"
+													aria-label="Platform: activate to sort column ascending">Performed By</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="odd" role="row"
+												th:each="auditLogReport,iterationStatus : ${merchantAuditLogList}"
+												th:unless="${merchantAuditLogList == null}">
+												<td th:text="${auditLogReport.createdDateStr}"></td>
+												<td th:text="${auditLogReport.action}"></td>
+												<td th:text="${auditLogReport.performedBy}"></td>
+											</tr> 
+										</tbody>
+									</table>
+								</div>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+					<!--/.row-->
+					<div class="col-md-12 col-sm-12">
+					<nav class="search-btns">
+						<ul class="pager">
+							<li class="previous"><a href="backtoMerchantSearch"><span
+									aria-hidden="true"></span> Back to Search Results</a></li>
+							<li class="next"><a href="merchantSearch">New
+									Search <span aria-hidden="true"></span>
+							</a></li>
+						</ul>
+					</nav>
+				</div>
+				</div>
+			</div>
+			</div>
+			
+			<!--/.row-->
+		</div><!-- end of row  -->
+
+	<div th:replace="fragments/footer :: footer"></div>
+	<script src="../../../resources/js/merchant-audit-log.js"
+		th:src="@{/resources/js/merchant-audit-log.js}"></script>
+	<script src="../../../resources/js/disabled-features.js"
+		th:src="@{/resources/js/disabled-features.js}"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div th:fragment="footerMenu">
+<footer role="contentinfo" class="footer clearfix">
+<ul>
+<li><a href="http://www.quisk.co/legal/privacy-policy/" target="new">Privacy Policy</a> </li>
+<li><a href="http://www.quisk.co/legal/terms-of-service/" target="new">Terms of Service </a> </li>
+<li><a href="http://www.quisk.co/about/contact-us/" target="new">Contact Us</a>
+</li>
+<p>&copy; <span th:text="${session.footerYear}"></span> Quisk, Inc. All rights reserved</p>
+</ul>
+</footer>
+</div>
+</body>
+</html>
+

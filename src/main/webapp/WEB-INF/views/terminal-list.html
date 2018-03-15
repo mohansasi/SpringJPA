@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Header fragment starts here -->
+<head>
+<title>Terminal </title>
+</head>
+<head th:replace="fragments/header-includes :: headerFragment"></head>
+<!-- Header fragment ends here -->
+<body id="quiskResponsive">
+<div class="min-height" id="main">
+<!-- Collect the Header-menu nav links, forms, and other -->
+		<nav th:replace="fragments/header-menu :: navFragment"></nav>
+<!-- /.navbar-collapse -->
+		<!--start of Merchant Profile Summary navbar-->
+		<div th:replace="fragments/merchant-summary-profile-top-section :: merchantProfileFragment"></div>
+		<!--start of Merchant Profile Summary navbar collapse -->
+		<!--  Left-menu links -->
+	<div  class="row ah-prof-container">
+		<div class="quisk-left-container">
+			<nav th:replace="fragments/merchant-summary-profile-menu :: merchantProfileMenuFragment"></nav>
+		</div>
+		
+		<!--  Left-menu links collapse-->
+		<div class="quisk-right-container">
+		<div class="container quisk-container">
+		<div class="panel panel-default">
+		<div class="panel-heading">Terminal List 
+			<span th:unless="${#authorization.expression('hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)')}">
+				<a href="#" type="button" class="btn btn-default btn-sm pull-right"> Add Terminal </a>
+			</span>
+			<span sec:authorize="hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)">
+				<a href="#" type="button" class="btn btn-default btn-sm pull-right dc" disabled="disabled"> Add Terminal </a>
+			</span>
+		</div>
+		<div class="panel-body">
+		<div class="col-md-12 col-sm-12">
+			
+			<table cellspacing="0" cellpadding="0" border="0"
+					id="terminalListTable" class="display dataTable no-footer"
+					role="grid" aria-describedby="example_info">
+				<thead>
+					<tr role="row">
+						<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" 
+							colspan="1" aria-label="Browser: activate to sort column descending">Terminal ID</th>
+						<th class="sorting_asc " tabindex="0" aria-controls="example"
+							rowspan="1" colspan="1"	aria-label="Engine: activate to sort column ascending"
+							aria-sort="ascending">Terminal Name</th>
+						<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1"
+							aria-label="Platform: activate to sort column ascending">Status</th>
+					</tr>
+				</thead>                          
+					<tbody>
+						<tr class="odd" role="row"
+							th:each="storeTerminal,iterationStatus : ${storeTerminalList}"
+							th:unless="${storeTerminalList == null}">
+							<td id="terminalDetailsId" ><a th:value="${iterationStatus.count}" th:text="${storeTerminal.fiTerminalId}" href="javascript: void(0)"></a>
+							<div style="display: none;">
+								<form th:action="@{terminalDetail}" method="POST" th:id="'terminalDetailForm' + ${iterationStatus.count}" >
+									<input type="hidden" th:name="terminalId" th:value="${storeTerminal.terminalId}"/>
+									<input type="submit" value="" />
+								</form>
+							</div>	
+							</td>
+							<td th:text="${storeTerminal.terminalName}"></td>
+							<td th:text="${storeTerminal.status}"></td>
+						</tr> 
+					</tbody>
+				</table>
+		</div>
+		</div>
+		</div>
+				<div class="col-md-12 col-sm-12">
+					<nav class="search-btns">
+						<ul class="pager">
+							<li class="previous"><a href="backtoMerchantSearch"><span
+									aria-hidden="true"></span> Back to Search Results</a></li>
+							<li class="next"><a href="merchantSearch">New
+									Search <span aria-hidden="true"></span>
+							</a></li>
+						</ul>
+					</nav>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+			
+<div th:replace="fragments/footer :: footer"></div>
+<script src="../../../resources/js/terminal-list.js" th:src="@{/resources/js/terminal-list.js}"></script>
+<script src="../../../resources/js/disabled-features.js" th:src="@{/resources/js/disabled-features.js}"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<div id="modal-overlay"  class="view-profile-pop modal fade in" 
+				tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+				aria-hidden="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button id="ClosePopup" aria-label="Close" data-dismiss="modal" class="close"
+					type="button">×
+				</button>
+				<h4 id="myModalLabel" class="modal-title">Merchant Details</h4>
+			</div>
+			<div class="panel-body kyc-profile-ovf">
+				<div class="panel-body view-profile-table">
+					<div class="col-xs-6 col-lg-12">
+			<table class="table font-size mrg-btm0" cellspacing="0" cellpadding="0" border="0">
+				<tbody>
+				<tr>
+						<td width="164"><strong>Merchant ID:</strong></td>
+						<td width="202"> <p th:text="${profileSummary.fiMerchantId}" ></p></td>
+						
+					</tr>
+				
+					<tr>
+						<td width="164"><strong>Merchant Name:</strong></td>
+						<td width="202"> <p th:text="${profileSummary.merchantName}" ></p></td>
+						
+					</tr>
+					<tr>
+						<td width="164"><strong>Merchant Contact Email:</strong></td>
+						<td width="202"> <p th:text="${profileSummary.email}" ></p></td>
+						
+					</tr>
+					<tr>
+						<td><strong>Contact Phone:</strong></td>
+						<td><p th:text="${profileSummary.phoneNumber}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Address 1:</strong></td>
+						<td><p th:text="${profileSummary.address}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Address 2:</strong></td>
+						<td><p th:text="${profileSummary.addressLine2}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>City:</strong></td>
+						<td><p th:text="${profileSummary.city}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>State/Province:</strong></td>
+						<td><p th:text="${profileSummary.state}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Zip/Postal Code:</strong></td>
+						<td><p th:text="${profileSummary.postalCode}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Country:</strong></td>
+						<td><p th:text="${profileSummary.country}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Time Zone:</strong></td>
+						<td><p th:text="${profileSummary.timeZone}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Merchant Category Code:</strong></td>
+						<td><p th:text="${profileSummary.merchantCategoryCode +' '+ profileSummary.merchantCategoryDesc}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Merchant Type:</strong></td>
+						<td><p th:text="${profileSummary.merchantType}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Status:</strong></td>
+						<td><p th:text="${profileSummary.status}" ></p></td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+			</div>
+		
+		</div>
+
+		</div>
+	</div>
+</div>
+<div id="modal-backdrop" class="modal-backdrop fade in"></div>

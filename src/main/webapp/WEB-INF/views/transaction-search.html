@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Header fragment starts here -->
+<head>
+<title>Search</title>
+</head>
+<head th:replace="fragments/header-includes :: headerFragment">
+<title>Search</title>
+</head>
+<!-- Header fragment ends here -->
+<body id="quiskResponsive" class="home-menu">
+	<div id="main" class="ah-search-container min-height">
+		<!-- Collect the nav links, forms, and other -->
+		<nav th:replace="fragments/header-menu :: navFragment"></nav>
+		<!-- /.navbar-collapse -->
+		<!-- start of transaction Search panel-->
+		<div class="panel-group pd-left0" id="accordion">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a class="" aria-expanded="true" data-toggle="collapse"
+							data-parent="#accordion" href="#collapseOne">Transaction Search</a>
+					</h4>
+				</div>
+				<div style="" aria-expanded="true" id="collapseOne"
+					class="panel-collapse collapse in">
+					<div class="panel-body">
+						<div class="panel-body" >
+							<p id="default_message">Please enter at least two search
+											criterion.</p>
+
+							<!--Start of Error message-->
+								<div class="notifications error-msg-h" id="notifications" tabindex="-1">
+									<p role="alert" class="search-validation-error" id="validation_error_messages" ></p>
+								</div>
+							<!--End of error message-->
+							<form class="form-horizontal" th:action="@{getTransactionSearchDetails}" method="post" id="transactionSearchFormId">
+							<input type="hidden" id="default_error_message" th:value="#{mearchant.required.message}" />
+							<input type="hidden" id="entityTypeId" th:value="${adminUserData.entityTypeId}" />
+							<input type="hidden" id="default_error_message_search" th:value="#{transaction.required.message}" />
+							<input type="hidden" id="transactionNotvalid" th:value="#{transaction.transactionid.invalid}" />
+						
+							<div class="form-group" th:if="${transactionSearchFormHome == 'home'}" >
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputEmail1" class="col-sm-5 control-label">Transaction ID: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="transactionId"
+												placeholder="Transaction ID" name= "transactionId" th:value="${transactionSearchRequest.transactionId}" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Authorization Code: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="authCode"
+												placeholder="Authorization Code" name="authorizationCode" th:value="${transactionSearchRequest.authorizationCode}" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Transaction Date: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="transactionDate" readonly="readonly"
+												placeholder="Transaction Date" name="transactionDateStr" th:value="${transactionSearchRequest.transactionDateStr}" />
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Merchant Name: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="merchantNameid"
+												placeholder="Merchant Name" name="merchantName" th:value="${transactionSearchRequest.merchantName}" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Transaction Amount: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="transactionAmount"
+												placeholder="Transaction Amount" name="transactionAmount.amount"  th:value="${transactionSearchRequest.transactionAmount.amount}" />
+										</div>
+										<div class="col-xs-6 col-sm-1"><div class="currency"  th:text="${currency}"></div></div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 0">
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-5 control-label">Network:
+										</label>
+										<div class="col-xs-6 col-sm-5" id="dropdown_network_id">
+											<div class="dropdown">
+												<select class="dropdown_network form-control" name="entityTypeId" id = "dropdown_network">
+														<option selected="selected" value="" id="defaultFINetwork">	
+															All Networks<span class="caret"></span>
+														</option>
+														<option th:each="entityInfo : ${entityInfos}" 
+															th:text="${entityInfo.entityName}" th:value="${entityInfo.entityId}" th:selected="${transactionSearchRequest.entityTypeId==entityInfo.entityId}">Network Name 
+														</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+									<div class="clearfix"></div>
+								 <div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 0">
+									<div class="form-group" id="dropdown_finetwork_fi_id">
+										<label for="inputEmail3" class="col-sm-5 control-label">FI:
+										</label>
+										<div class="col-xs-6 col-sm-5">
+											<div class="dropdown">
+												<span th:if="${fis!= null}" >
+													<select id="dropdown_fi" class="dropdown_fi form-control" name="entityIds">
+														<option selected="selected" value="" id="defaultFI" >
+															Select FI<span class="caret"></span>
+														</option>
+														<option th:each="fi : ${fis}"
+															th:text="${fi.entityName}" th:value="${fi.entityId}" th:selected="${transactionSearchRequest.entityIds==fi.entityId}" >Network Name 
+														</option>
+													</select>
+												</span>
+												<span th:if="${fis== null}" >
+													<select id="dropdown_fi" class="dropdown_fi form-control" name="entityIds">
+														<option selected="selected" value="">
+															Select FI<span class="caret"></span>
+														</option>
+													</select>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 5">
+									<div class="form-group" id="dropdown_fi_id">
+										<label for="inputEmail3" class="col-sm-5 control-label">FI:
+										</label>
+										<div class="col-xs-6 col-sm-5">
+											<div class="dropdown">
+												<select class="dropdown_fi form-control" name="entityIds" id = "dropdown_fi">
+													<option selected="selected" value="" id="defaultFI" >
+														Select FI<span class="caret"></span>
+													</option>
+													<option th:each="entityInfo : ${entityInfos}"
+														th:text="${entityInfo.entityName}" th:value="${entityInfo.entityId}" th:selected="${transactionSearchRequest.entityIds==entityInfo.entityId}">FI Name
+														<input type="hidden" name="entityIds"  th:field="${entityInfo.entityId}"/>
+													</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group" th:if="${transactionSearchFormHome != 'home'}">
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputEmail1" class="col-sm-5 control-label">Transaction ID: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="transactionId"
+												placeholder="Transaction ID" name= "transactionId" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Authorization Code: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="authCode"
+												placeholder="Authorization Code" name="authorizationCode"  />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Transaction Date: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="transactionDate"
+												placeholder="Transaction Date" name="transactionDateStr"  readonly="readonly" />
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Merchant Name: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="merchantNameid"
+												placeholder="Merchant Name" name="merchantName"  />
+										</div>
+									</div>
+								</div>
+									<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Transaction Amount: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="transactionAmount"
+												placeholder="Transaction Amount" name="transactionAmount.amount"   />
+										</div>
+										<div class="col-xs-6 col-sm-1"><div class="currency"  th:text="${currency}"></div></div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 0">
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-5 control-label">Network:
+										</label>
+										<div class="col-xs-6 col-sm-5" id="dropdown_network_id">
+											<div class="dropdown">
+												<select class="dropdown_network form-control" name="entityTypeId" id = "dropdown_network">
+														<option selected="selected" value="" id="defaultFINetwork">	
+															All Networks<span class="caret"></span>
+														</option>
+														<option th:each="entityInfo : ${entityInfos}" 
+															th:text="${entityInfo.entityName}" th:value="${entityInfo.entityId}" >Network Name 
+														</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+									<div class="clearfix"></div>
+							
+								
+								<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 0">
+									<div class="form-group" id="dropdown_finetwork_fi_id">
+										<label for="inputEmail3" class="col-sm-5 control-label">FI:
+										</label>
+										<div class="col-xs-6 col-sm-5">
+											<div class="dropdown">
+												<span th:if="${fis!= null}" >
+													<select id="dropdown_fi" class="dropdown_fi form-control" name="entityIds">
+														<option selected="selected" value="" id="defaultFI" >
+															Select FI<span class="caret"></span>
+														</option>
+														<option th:each="fi : ${fis}"
+															th:text="${fi.entityName}" th:value="${fi.entityId}"  >Network Name 
+														</option>
+													</select>
+												</span>
+												<span th:if="${fis== null}" >
+													<select id="dropdown_fi" class="dropdown_fi form-control" name="entityIds">
+														<option selected="selected" value="">
+															Select FI<span class="caret"></span>
+														</option>
+													</select>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							 <div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 5">
+									<div class="form-group" id="dropdown_fi_id">
+										<label for="inputEmail3" class="col-sm-5 control-label">FI:
+										</label>
+										<div class="col-xs-6 col-sm-5">
+											<div class="dropdown">
+												<select class="dropdown_fi form-control" name="entityIds" id = "dropdown_fi">
+													<option selected="selected" value=""  id="defaultFI">
+														Select FI<span class="caret"></span>
+													</option>
+													<option th:each="entityInfo : ${entityInfos}"
+														th:text="${entityInfo.entityName}" th:value="${entityInfo.entityId}">FI Name
+														<input type="hidden" name="entityIds"  th:field="${entityInfo.entityId}" />
+													</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
+								<label for="inputPassword3" class="col-sm-2 control-label"></label>
+								<div class="row">
+									<table class="table">
+
+										<tbody>
+											<tr>
+												<td width="157px"></td>
+												<td>
+													<input type="submit" class="btn btn-primary" value="Search" /> 
+													<button type="button" class="btn btn-default" id="reset">Reset</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Search Results
+				</div>
+				<div class="panel-body">
+					<div id="demo">
+						<div id="example_wrapper" class="dataTables_wrapper no-footer">
+							<table cellspacing="0" cellpadding="0" border="0" id="transactionSearchGridId"
+								class="display dataTable no-footer" role="grid"
+								aria-describedby="example_info">
+								<thead>
+									<tr role="row">
+										<th class="sorting_asc" tabindex="0" aria-controls="example"
+											rowspan="1" colspan="1" style="width: 153px;"
+											aria-label="Browser: activate to sort column descending"
+											aria-sort="ascending">Transaction ID</th>
+										<th class="sorting" tabindex="0" aria-controls="example"
+											rowspan="1" colspan="1" style="width: 156px;"
+											aria-label="Platform: activate to sort column ascending">Authorization Code</th>
+										<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending">Transaction Description</th>	
+										<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" colspan="1"
+											style="width: 140px;"
+											aria-label="Version: activate to sort column ascending">Date/Time</th>
+										<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending">Merchant Name</th>
+										<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending">Transaction Amount</th>
+										<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending">Transaction Type</th>
+											
+									<span th:if="${adminUserData.entityTypeId} == 0">
+											<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending"><span
+											class="center sorting" style="width: 122px;">FI</span></th>
+											<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" colspan="1"
+											style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending">FI
+											Network</th>
+										</span>
+										<span th:if="${adminUserData.entityTypeId} == 5">
+										<th class="center sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 122px;" aria-label="Grade: activate to sort column ascending">FI</th>
+										</span>
+										<span th:if="${adminUserData.entityTypeId} == 1">
+										</span>
+									</tr>
+								</thead>
+								
+								 <span class="form-group" th:if="${transactionSearchFormHome != 'home'}" >
+								 <tbody style="display: none;">
+								 </tbody>
+								</span>
+								 <span class="form-group" th:if="${transactionSearchFormHome == 'home'}" >
+									 <tbody>
+									 <tr role="row" class="odd" th:each="transactionSearch,iterationStatus : ${transactionSearchRequestlist}" th:unless="${transactionSearchRequestlist == null}">
+											    <td class="" id="showTransactionId">
+													<a th:text="${transactionSearch.transactionId}" th:value="${iterationStatus.count}" href="javascript: void(0)" ></a>
+													<div style="display: none;">
+													<form th:action="@{transactionSummary}" method="POST" th:id="'transactionSearchDetailId' + ${iterationStatus.count}" >
+														<input type="hidden" th:name="transactionId" th:value="${transactionSearch.transactionId}"/>
+														<input type="hidden" th:name="refTransactionId" th:value="${transactionSearch.refTransactionId}"/>
+														<input type="hidden" th:name="transactingEntityFiId" th:value="${transactionSearch.transactingEntityFiId}"/>
+														<input type="hidden" th:name="transactingEntityName" th:value="${transactionSearch.transactingEntityName}"/>
+														<input type="submit" value="" />
+													</form>
+													</div>
+												</td>
+											     <td class="" th:text="${transactionSearch.authCode}" ></td>
+											     <td class="" th:text="${transactionSearch.transactionDescription}" ></td>
+											     <td class="" th:text="${transactionSearch.formattedTransactionDate}"></td>
+											     <td class="" th:text="${transactionSearch.transactingEntityName}" ></td>
+											     <td class="" th:text="${transactionSearch.formattedTransactionAmount}" ></td>
+											     <td class="" th:text="${transactionSearch.transactionType}" ></td>
+												
+												<span th:if="${adminUserData.entityTypeId} == 0">
+													<td class="" th:text="${transactionSearch.fiName}" ></td>
+													<td class="" th:text="${transactionSearch.fiNetworkName}" ></td>
+												</span>
+												<span th:if="${adminUserData.entityTypeId} == 5">
+												<td class="" th:text="${transactionSearch.fiName}" ></td>
+												</span>
+												<span th:if="${adminUserData.entityTypeId} == 1">
+												</span>
+											</tr>
+										</tbody>
+								 </span>
+								
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div style="" aria-expanded="true" id="collapseTwo"
+			class="panel-collapse collapse in">
+			<div class="panel-body">
+				<div id="demo"></div>
+			</div>
+
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer"></div>
+	<script src="../../../resources/js/jquery.maskMoney-min.js" th:src="@{/resources/js/jquery.maskMoney-min.js}"></script>
+	<script src="../../../resources/js/transactionSearch.js" th:src="@{/resources/js/transactionSearch.js}"></script>
+	<script src="../../../resources/js/disabled-features.js" th:src="@{/resources/js/disabled-features.js}"></script>
+</body>
+</html>

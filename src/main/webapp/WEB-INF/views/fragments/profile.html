@@ -1,0 +1,68 @@
+<!-- Modal for displaying Profile information starts here -->
+<div th:fragment="profileModalFragment" id="profileModalFragment" >
+<div class="modal fade" id="profilemodal" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Profile -
+				<span th:if="${adminUserData != null}" >
+					<span th:text="${adminUserData.firstName + ' ' + adminUserData.lastName}" 
+						th:if="${adminUserData.firstName != null and adminUserData.lastName!=null }">&nbsp;</span>
+				</span>
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row" th:unless="${adminUserData == null}">
+					<div class="col-md-4">
+						<strong> Last Login Date:</strong>
+					</div>
+					<div class="col-md-4" 
+						 th:if="${adminUserData.lastLoginDateAdminFiTimeZone == null}">
+					</div>
+					<div class="col-md-4" th:text= "${adminUserData.lastLoginDateAdminFiTimeZone}"
+						 th:unless="${adminUserData.lastLoginDateAdminFiTimeZone == null}">
+				    </div>
+					
+				</div>
+
+				<div class="row">
+					<div class="col-md-4">
+						<strong> Permissions:</strong>
+					</div>
+					<div class="col-md-4" th:unless="${adminUserData == null}">
+					 <ul th:if="${adminUserData.roles == null}">
+					 	
+					 </ul>
+					 <ul th:each="role : ${adminUserData.roles}" th:unless="${adminUserData.roles == null}">
+					 	<li th:text="${role.roleId}"></li>
+					 </ul>
+					</div>
+				</div>
+				
+				<div class="row" th:unless="${adminUserData == null}">
+					<div class="col-md-4">
+						<strong>Last Password Reset:</strong>
+					</div>
+					<div class="col-md-4"
+						 th:if="${adminUserData.passwordDateAdminFiTimeZone == null}">
+					</div>
+					<div class="col-md-4" th:text= "${adminUserData.passwordDateAdminFiTimeZone}"
+						 th:unless="${adminUserData.passwordDateAdminFiTimeZone == null}">
+					</div>
+					<div class="col-md-4">
+						<a href="passwordReset" type="button"
+							class="btn btn-success btn-sm pull-left">Reset My Password</a>
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary closeProfileView" data-dismiss="modal"
+						aria-hidden="true">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+ <div class="modal-backdrop fade in" style="display: none;" id="profileOverlay"></div> 
+</div>
+<!-- Modal for displaying Profile information ends here -->

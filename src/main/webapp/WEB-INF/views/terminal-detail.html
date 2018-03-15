@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Header fragment starts here -->
+<head>
+<title>Terminal Detail</title>
+</head>
+<head th:replace="fragments/header-includes :: headerFragment"></head>
+<!-- Header fragment ends here -->
+<body id="quiskResponsive">
+<div class="min-height" id="main">
+<!-- Collect the Header-menu nav links, forms, and other -->
+		<nav th:replace="fragments/header-menu :: navFragment"></nav>
+<!-- /.navbar-collapse -->
+		<!--start of Merchant Profile Summary navbar-->
+		<div th:replace="fragments/merchant-summary-profile-top-section :: merchantProfileFragment"></div>
+		<!--start of Merchant Profile Summary navbar collapse -->
+		<!--  Left-menu links -->
+	<div  class="row ah-prof-container">
+		<div class="quisk-left-container">
+			<nav th:replace="fragments/merchant-summary-profile-menu :: merchantProfileMenuFragment"></nav>
+		</div>
+		
+		<!--  Left-menu links collapse-->
+		<div class="quisk-right-container">
+		<div class="container quisk-container">
+		<div class="panel panel-default">
+		<div class="panel-heading store">Terminal Detail
+			<span th:unless="${#authorization.expression('hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)')}">
+				<a href="#" type="button" class="btn btn-default btn-sm pull-right"  th:if="${storeTerminalDetail.status}!='DELETED'"> Delete </a>
+				<a href="#" type="button" class="btn btn-default btn-sm pull-right dc" disabled="disabled" th:if="${storeTerminalDetail.status}=='DELETED'"> Delete </a>
+			</span>
+			<span sec:authorize="hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)">
+				<a href="#" type="button" class="btn btn-default btn-sm pull-right dc" disabled="disabled"> Delete </a>
+			</span>
+			<span th:unless="${#authorization.expression('hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)')}">
+				<a href="editTerminalDetail" type="button" class="btn btn-default btn-sm pull-right" th:if="${storeTerminalDetail.status}!='DELETED'"> Edit </a>
+				<a href="#" type="button" class="btn btn-default btn-sm pull-right dc" disabled="disabled" th:if="${storeTerminalDetail.status}=='DELETED'"> Edit </a>
+			</span>
+			<span sec:authorize="hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)">
+				<a href="editTerminalDetail" type="button" class="btn btn-default btn-sm pull-right dc" disabled="disabled"> Edit </a>
+			</span>
+		</div>
+		<div class="panel-body">
+		<div class="col-md-6 col-sm-12">
+			
+			<table class="table">
+				<tbody>
+					<tr>
+						<td width="164"><strong>Terminal Name:</strong></td>
+						<td width="202"> <p th:text="${storeTerminalDetail.terminalName}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Terminal ID:</strong></td>
+						<td><p th:text="${storeTerminalDetail.fiTerminalId}" ></p></td>
+					</tr>
+					<tr>
+						<td><strong>Status:</strong></td>
+						<td><p th:text="${storeTerminalDetail.status}" ></p></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		</div>
+				<div class="col-md-12 col-sm-12">
+					<nav class="search-btns">
+						<ul class="pager">
+							<li class="previous"><a href="backtoMerchantSearch"><span
+									aria-hidden="true"></span> Back to Search Results</a></li>
+							<li class="next"><a href="merchantSearch">New
+									Search <span aria-hidden="true"></span>
+							</a></li>
+						</ul>
+					</nav>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		
+		
+<div th:replace="fragments/footer :: footer"></div>
+<script src="../../../resources/js/terminal-detail.js" th:src="@{/resources/js/terminal-detail.js}"></script>
+<script src="../../../resources/js/disabled-features.js" th:src="@{/resources/js/disabled-features.js}"></script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- Header fragment starts here -->
+<head>
+<title>Search</title>
+</head>
+<head th:replace="fragments/header-includes :: headerFragment">
+<title>Search</title>
+</head>
+<!-- Header fragment ends here -->
+<body id="quiskResponsive" class="home-menu">
+	<div id="main" class="ah-search-container min-height">
+		<!-- Collect the nav links, forms, and other -->
+		<nav th:replace="fragments/header-menu :: navFragment"></nav>
+		<!-- /.navbar-collapse -->
+		<!-- start of merchant Search panel-->
+		<div class="panel-group pd-left0" id="accordion">
+		<input type="hidden" th:value="${adminUserData.entityTypeId}" id="userRoleId" />
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a class="" aria-expanded="true" data-toggle="collapse"
+							data-parent="#accordion" href="#collapseOne">Merchant Search</a>
+					</h4>
+				</div>
+				<div style="" aria-expanded="true" id="collapseOne"
+					class="panel-collapse collapse in">
+					<div class="panel-body">
+						<div class="panel-body">
+							<p id="default_message">Please enter values in at least the Merchant Name, Email Address, Merchant ID or Merchant Type.</p>
+
+							<!--Start of Error message-->
+								<div class="notifications error-msg-h" id="notifications" tabindex="-1">
+									<p role="alert" class="search-validation-error" id="validation_error_messages" ></p>
+								</div>
+							<!--End of error message-->
+							<form class="form-horizontal" th:action="@{getMerchantSearchDetails}" method="post" id="merchantSearchFormId">
+							<input type="hidden" id="default_error_message" th:value="#{mearchant.required.message}" />
+							<input type="hidden" id="emailAddressNotValid" th:value="#{mearchant.email.invalid}" />
+							<input type="hidden" id="entityTypeId" th:value="${adminUserData.entityTypeId}" />
+							<input type="hidden" id="merchantIdNotvalid" th:value="#{mearchant.merchantId.invalid}" />
+							
+						
+							<div class="form-group"  th:if="${merchantSearchFromHome == 'home'}">
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputEmail1" class="col-sm-5 control-label">Merchant Name: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="merchantName"
+												placeholder="Merchant Name" name= "merchantName" th:value="${merchantSearchRequest.merchantName}" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Email Address: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="emailAddress"
+												placeholder="Email Address" name="merchantEmail" th:value="${merchantSearchRequest.merchantEmail}" />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Merchant ID: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="merchantId" th:maxlength="#{id.max.length}"
+												placeholder="Merchant ID" name="fiMerchantId" th:value="${merchantSearchRequest.fiMerchantId}"  />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4" >
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-5 control-label">Merchant Type: </label>
+										<div class="col-xs-6 col-sm-5">
+										<div class="dropdown">
+											<select class="dropdown_merchant form-control" name="merchantType" id ="merchantType">
+												<option selected="selected" value="" id="defaultMerchantType">	
+													All Merchants<span class="caret"></span>
+												</option> 
+													<option value="Regular" th:selected="${merchantSearchRequest.merchantType == 'Regular'}">Regular
+													</option>
+													<option value="Agent" th:selected="${merchantSearchRequest.merchantType == 'Agent'}">Agent
+													</option>
+											</select>
+										</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 0">
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-5 control-label">Network:
+										</label>
+										<div class="col-xs-6 col-sm-5" id="dropdown_network_id">
+											<div class="dropdown">
+												<select class="dropdown_network form-control" name="entityTypeId" id = "dropdown_network">
+														<option  selected="selected" value="" id="defaultFINetwork">	
+															All Networks<span class="caret"></span>
+														</option>
+														<option th:each="entityInfo : ${entityInfos}" 
+															th:text="${entityInfo.entityName}" th:value="${entityInfo.entityId}" th:selected="${merchantSearchRequest.entityTypeId==entityInfo.entityId}">Network Name 
+														</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 0">
+									<div class="form-group" id="dropdown_finetwork_fi_id">
+										<label for="inputEmail3" class="col-sm-5 control-label">FI:
+										</label>
+										<div class="col-xs-6 col-sm-5">
+											<div class="dropdown">
+												<span th:if="${fis!= null}" >
+													<select id="dropdown_fi" class="dropdown_fi form-control" name="entityIds">
+														<option selected="selected" value="" id="defaultFI" >
+															Select FI<span class="caret"></span>
+														</option>
+														<option th:each="fi : ${fis}"
+															th:text="${fi.entityName}" th:value="${fi.entityId}" th:selected="${merchantSearchRequest.entityIds==fi.entityId}" >Network Name 
+														</option>
+													</select>
+												</span>
+												<span th:if="${fis== null}" >
+													<select id="dropdown_fi" class="dropdown_fi form-control" name="entityIds">
+														<option selected="selected" value="">
+															Select FI<span class="caret"></span>
+														</option>
+													</select>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 5">
+									<div class="form-group" id="dropdown_fi_id">
+										<label for="inputEmail3" class="col-sm-5 control-label">FI:
+										</label>
+										<div class="col-xs-6 col-sm-5">
+											<div class="dropdown">
+												<select class="dropdown_fi form-control" name="entityIds" id = "dropdown_fi">
+													<option selected="selected" value=""  id="defaultFI">
+														Select FI<span class="caret"></span>
+													</option>
+													<option th:each="entityInfo : ${entityInfos}"
+														th:text="${entityInfo.entityName}" th:value="${entityInfo.entityId}" th:selected="${merchantSearchRequest.entityIds==entityInfo.entityId}">FI Name
+														<input type="hidden" name="entityIds"  th:field="${entityInfo.entityId}" />
+													</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group" th:if="${merchantSearchFromHome != 'home'}">
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputEmail1" class="col-sm-3 control-label">Merchant Name: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="merchantName" th:value="${merchantName}"
+												placeholder="Merchant Name" name= "merchantName"  />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-3 control-label">Email Address: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="emailAddress" th:value="${emailAddress}"
+												placeholder="Email Address" name="merchantEmail"  />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-3 control-label">Merchant ID: </label>
+										<div class="col-xs-6 col-sm-5">
+											<input type="text" class="form-control" id="merchantId" th:value="${merchantId}"
+												placeholder="Merchant ID" name="fiMerchantId"   />
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4" >
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-3 control-label">Merchant Type: </label>
+										<div class="col-xs-6 col-sm-5">
+										<div class="dropdown">
+											<select class="dropdown_merchant form-control" name="merchantType" id ="merchantType">
+												<option selected="selected" value="" id="defaultMerchantType">	
+													All Merchants<span class="caret"></span>
+												</option> 
+												<option value="Regular">Regular
+													</option>
+													<option value="Agent">Agent
+													</option>
+											</select>
+										</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 0">
+									<div class="form-group">
+										<label for="inputEmail3" class="col-sm-3 control-label">Network:
+										</label>
+										<div class="col-xs-6 col-sm-5" id="dropdown_network_id">
+											<div class="dropdown">
+												<select class="dropdown_network form-control" name="entityTypeId" id = "dropdown_network">
+														<option selected="selected" value="" id="defaultFINetwork" >	
+															All Networks<span class="caret"></span>
+														</option>
+														<option th:each="entityInfo : ${entityInfos}" 
+															th:text="${entityInfo.entityName}" th:value="${entityInfo.entityId}" >Network Name 
+														</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 0">
+									<div class="form-group" id="dropdown_finetwork_fi_id">
+										<label for="inputEmail3" class="col-sm-3 control-label">FI:
+										</label>
+										<div class="col-xs-6 col-sm-5">
+											<div class="dropdown">
+												<span th:if="${fis!= null}" >
+													<select id="dropdown_fi" class="dropdown_fi form-control" name="entityIds">
+														<option selected="selected" value="" id="defaultFI">
+															Select FI<span class="caret"></span>
+														</option>
+														<option th:each="fi : ${fis}"
+															th:text="${fi.entityName}" th:value="${fi.entityId}"  >Network Name 
+														</option>
+													</select>
+												</span>
+												<span th:if="${fis== null}" >
+													<select id="dropdown_fi" class="dropdown_fi form-control" name="entityIds">
+														<option selected="selected" value="">
+															Select FI<span class="caret"></span>
+														</option>
+													</select>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-xs-6 col-sm-4" th:if="${adminUserData.entityTypeId} == 5">
+									<div class="form-group" id="dropdown_fi_id">
+										<label for="inputEmail3" class="col-sm-3 control-label">FI:
+										</label>
+										<div class="col-xs-6 col-sm-5">
+											<div class="dropdown">
+												<select class="dropdown_fi form-control" name="entityIds" id = "dropdown_fi">
+													<option selected="selected" value=""  id="defaultFI" >
+														Select FI<span class="caret"></span>
+													</option>
+													<option th:each="entityInfo : ${entityInfos}"
+														th:text="${entityInfo.entityName}" th:value="${entityInfo.entityId}">FI Name
+														<input type="hidden" name="entityIds"  th:field="${entityInfo.entityId}"/>
+													</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+								<label for="inputPassword3" class="col-sm-2 control-label"></label>
+								<div class="row">
+									<table class="table">
+
+										<tbody>
+											<tr>
+												<td width="157px"></td>
+												<td>
+													<input type="submit" class="btn btn-primary" value="Search" /> 
+													<button type="button" class="btn btn-default" id="reset">Reset</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Search Results
+				</div>
+				<!-- <div style="" aria-expanded="true" id="collapseTwo" class="panel-collapse collapse in">-->
+				<div class="panel-body">
+					<div id="demo">
+						<div id="example_wrapper" class="dataTables_wrapper no-footer">
+							<table cellspacing="0" cellpadding="0" border="0" id="merchantSearchGridId"
+								class="display dataTable no-footer" role="grid"
+								aria-describedby="example_info">
+								<thead>
+									<tr role="row">
+										<th class="sorting_asc" tabindex="0" aria-controls="example"
+											rowspan="1" colspan="1" style="width: 153px;"
+											aria-label="Browser: activate to sort column descending"
+											aria-sort="ascending">Merchant ID</th>
+										<th class="sorting" tabindex="0" aria-controls="example"
+											rowspan="1" colspan="1" style="width: 156px;"
+											aria-label="Platform: activate to sort column ascending">Merchant Name</th>
+										<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" colspan="1"
+											style="width: 140px;"
+											aria-label="Version: activate to sort column ascending">Email Address</th>
+										<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending">Merchant Type</th>
+										<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending">Status</th>
+											
+									<span th:if="${adminUserData.entityTypeId} == 0">
+											<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending"><span
+											class="center sorting" style="width: 122px;">FI</span></th>
+											<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" colspan="1"
+											style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending">FI
+											Network</th>
+										</span>
+										<span th:if="${adminUserData.entityTypeId} == 5">
+										<th class="center sorting" tabindex="0"
+											aria-controls="example" rowspan="1" colspan="1"
+											style="width: 122px;"
+											aria-label="Grade: activate to sort column ascending">FI
+											Network</th>
+										</span>
+										<span th:if="${adminUserData.entityTypeId} == 1">
+										</span>
+									</tr>
+								</thead>
+								 <span class="form-group" th:if="${merchantSearchFromHome != 'home'}" >
+								 <tbody style="display: none;">
+								 </tbody>
+								</span>
+								
+								
+								 <span class="form-group" th:if="${merchantSearchFromHome == 'home'}" >
+									 <tbody>
+									 <tr role="row" class="odd" th:each="merchantSearch,iterationStatus : ${merchantSearchRequestlist}" th:unless="${merchantSearchRequestlist == null}">
+											    <td class="" id="showSummaryData" >
+												<a th:text="${merchantSearch.fiMerchantId}" th:value="${iterationStatus.count}" href="javascript: void(0)"></a> 
+												<div style="display: none;">
+												<form th:action="@{merchantProfile}" method="POST" th:id="'merchantSearchProfile' + ${iterationStatus.count}" >
+													<input type="hidden" th:name="merchantId" th:value="${merchantSearch.merchantId}"/>
+													<input type="hidden" th:name="fiMerchantId" th:value="${merchantSearch.fiMerchantId}"/>
+													<input type="hidden" th:name="merchantName" th:value="${merchantSearch.merchantName}"/>
+													<input type="hidden" th:name="email" th:value="${merchantSearch.email}"/>
+													<input type="hidden" th:name="merchantType" th:value="${merchantSearch.merchantType}"/>
+													<input type="hidden" th:name="status" th:value="${merchantSearch.status}"/>
+													<input type="hidden" th:name="fiNetworkName" th:value="${merchantSearch.fiNetworkName}"/>
+													<input type="hidden" th:name="fiName" th:value="${merchantSearch.fiName}"/>
+													<input type="hidden" th:name="fiId" th:value="${merchantSearch.fiId}"/>
+													<input type="submit" value="" />
+												</form>
+												</div>
+												</td>
+											     <td class="" th:text="${merchantSearch.merchantName}" ></td>
+											     <td class="" th:text="${merchantSearch.email}" ></td>
+											     <td class="" th:text="${merchantSearch.merchantType}" ></td>
+											     <td class="" th:text="${merchantSearch.status}" ></td>
+												
+												<span th:if="${adminUserData.entityTypeId} == 0">
+													<td class="" th:text="${merchantSearch.fiName}" ></td>
+													<td class="" th:text="${merchantSearch.fiNetworkName}" ></td>
+												</span>
+												<span th:if="${adminUserData.entityTypeId} == 5">
+												<td class="" th:text="${merchantSearch.fiName}" ></td>
+												</span>
+												<span th:if="${adminUserData.entityTypeId} == 1">
+												</span>
+											</tr>
+										</tbody>
+								 </span>
+								
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div style="" aria-expanded="true" id="collapseTwo"
+			class="panel-collapse collapse in">
+			<div class="panel-body">
+				<div id="demo"></div>
+			</div>
+
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer"></div>
+	<script src="../../../resources/js/home.js" th:src="@{/resources/js/home.js}"></script>
+	<script src="../../../resources/js/disabled-features.js" th:src="@{/resources/js/disabled-features.js}"></script>
+	<script src="../../../resources/js/merchant-search.js" th:src="@{/resources/js/merchant-search.js}"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!-- Collect the nav links, forms, and other -->
+			<nav class="navbar navbar-default navbar-fixed-top" id="navFragment" th:fragment="navFragment">
+			<a href="javascript:void(0)" class="menu-icon"></a>
+				<div class="quisk-logo-section">
+					<a href="home" ><img src="../../../resources/images/Quisk-logo.png"
+						th:src="@{/resources/images/Quisk-logo.png}"  alt="Quisk, Inc." /></a>
+				</div>
+				<!-- Collect the nav links, forms, and other -->
+				<div class="quisk-menu-top-1">
+					<div id="bs-example-navbar-collapse-1"
+						class="navbar-collapse">
+						<ul class="nav navbar-nav">
+							<li class="active" id="homeMenu"><a href="home"><strong>Home</strong><span
+									class="sr-only"></span></a>
+							</li>
+							
+							
+							<li sec:authorize="hasAnyRole(#ctx.sessionAttributes.roleSupportMenu,T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)"  id="supportMenu"><a aria-expanded="false" role="button"
+								data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);"><strong>Support</strong><span
+									class="caret"></span></a>
+								<ul role="menu" class="dropdown-menu">
+									<li><a href="merchantSearch">Merchant search</a></li>
+									<li class="divider"></li>
+									<li><a href="transactionSearch">Transaction search</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Detail review</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Edit merchant detail</a></li>
+								</ul>
+							</li>
+							<li th:unless="${#authorization.expression('hasAnyRole(#ctx.sessionAttributes.roleSupportMenu,T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)')}" id="supportMenu" ><a aria-expanded="false" role="button"
+								data-toggle="dropdown" class="dropdown-toggle disabled" href="javascript:void(0);" ><strong>Support</strong><span
+									class="caret"></span></a>
+								<ul role="menu" class="dropdown-menu disabled">
+									<li><a href="merchantSearch">Merchant search</a></li>
+									<li class="divider"></li>
+									<li><a href="transactionSearch">Transaction search</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Detail review</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Edit merchant detail</a></li>
+								</ul>
+							</li>
+							
+							
+							<li sec:authorize="hasAnyRole(#ctx.sessionAttributes.merchantSetup,T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)" id="setupMenu"><a href="javascript:void(0);" class="dropdown-toggle"
+								data-toggle="dropdown" role="button" aria-expanded="false"><strong>Onboarding</strong><span
+
+									class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="feesTax">Fee table construction</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Account limit table construction</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Bulk upload merchant</a></li>
+									<li class="divider"></li>
+									<li><a href="#">New merchant build</a></li>
+								</ul>
+							</li>
+							<li th:unless="${#authorization.expression('hasAnyRole(#ctx.sessionAttributes.merchantSetup,T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)')}"  id="setupMenu" ><a href="javascript:void(0);" class="dropdown-toggle disabled"
+								data-toggle="dropdown" role="button" aria-expanded="false"><strong>Onboarding</strong><span
+
+									class="caret"></span></a>
+								<ul class="dropdown-menu disabled" role="menu">
+									<li><a href="feesTax">Fee table construction</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Account limit table construction</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Bulk upload merchant</a></li>
+									<li class="divider"></li>
+									<li><a href="#">New merchant build</a></li>
+								</ul>
+							</li>
+							
+							
+							<li sec:authorize="hasAnyRole(#ctx.sessionAttributes.roleReports,T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)" id="reportsMenu"><a href="javascript:void(0);" class="dropdown-toggle"
+								data-toggle="dropdown" role="button" aria-expanded="false"><strong>Reports</strong><span
+									class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">Daily settlement</a></li>
+									
+								</ul>
+							</li>
+							<li th:unless="${#authorization.expression('hasAnyRole(#ctx.sessionAttributes.roleReports,T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)')}"  id="reportsMenu" ><a href="javascript:void(0);" class="dropdown-toggle disabled"
+								data-toggle="dropdown" role="button" aria-expanded="false"><strong>Reports</strong><span
+									class="caret"></span></a>
+								<ul class="dropdown-menu disabled" role="menu">
+									<li><a href="#">Daily settlement</a></li>
+									
+								</ul>
+							</li>
+							
+							
+						</ul>
+					</div>
+				<!-- /.navbar-collapse -->
+			
+				</div>
+				<div class="quisk-menu-top-2">
+					<ul class="nav navbar-nav navbar-right user-dtl">
+						<li sec:authorize="hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).QUISK_ACCESS.name,T(co.quisk.ap.support.model.enums.EnumAccessType).NETWORK_ACCESS.name)">
+							<a href="#" th:text="${adminUserData.entityIds[0].entityName}" th:unless="${adminUserData == null}"></a>
+						</li>
+						<li sec:authorize="hasAnyRole(T(co.quisk.ap.support.model.enums.EnumAccessType).ACQUIRER_ACCESS.name)">
+							<a href="#" th:text="${session.fiName}" th:unless="${session.fiName == null}"></a>
+						</li>
+						
+						<li><a href="#" id="profileView"
+								 th:text="${adminUserData.firstName + ' ' + adminUserData.lastName}" th:unless="${adminUserData == null}"></a></li>
+						<li>
+							<form th:action="@{logout}" method="POST">
+								<input type="submit" class="home-logout-btn" value="Logout" />
+							</form>
+					
+						</li>
+						<li><a target="_blank" th:href="${session.supportURL}" >
+						  	<img width="46" border="0" height="46" usemap="#Map2" alt="Help" src="../../../resources/images/Help-icon2.jpg"
+						  		th:src="@{/resources/images/Help-icon2.jpg}" />
+						  	</a>
+						</li>
+					</ul>
+				</div>
+				<div th:replace="fragments/right-click-disabled-modal :: modalFragment"></div>
+				<div th:replace="fragments/profile :: profileModalFragment"></div>
+			</nav>
+<!-- /.navbar-collapse -->

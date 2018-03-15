@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Quisk India</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="../../../resources/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css" th:href="@{/resources/css/bootstrap.min.css}" />
+<script src="../../../resources/js/jquery.min.js"
+	th:src="@{/resources/js/jquery.min.js}"></script>
+<script src="../../../resources/js/bootstrap.min.js"
+	th:src="@{/resources/js/bootstrap.min.js}"></script>
+<link
+	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link href="../../../resources/css/style.css" rel="stylesheet"
+	type="text/css" th:href="@{/resources/css/style.css}" />
+
+</head>
+<body>
+	<!-- Start Nav Bar -->
+	<div class="example3">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target="#myNavbar">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="../home"><img
+						src="../../../resources/images/digi_avtaar.png"
+						th:src="@{/resources/images/digi_avtaar.png}" /></a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav">
+						<li><a href="../home">Home</a></li>
+						<li class="dropdown"><a class="dropdown-toggle"
+							data-toggle="dropdown" href="#">About Us<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Page 1-1</a></li>
+								<li><a href="#">Page 1-2</a></li>
+								<li><a href="#">Page 1-3</a></li>
+							</ul></li>
+						<li class="active"><a href="productpage.html">Product</a></li>
+						<li><a href="#">Contact</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>
+								Login</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+	<!-- Close  Nav Bar -->
+
+	<!-- Start Main Content-->
+
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="clear"></div>
+					<div class="col-md-6">
+						<section id="gallery" class="simplegallery">
+							<div class="content">
+								<img class="image_1" alt=""
+									th:attr="src=@{'/resources/images/bigs/'+${productDetails.productImg1}}" />
+								<img src="../../../resources/images/bigs/product8_2.jpg"
+									class="image_2" style="display: none" alt=""
+									th:src="@{/resources/images/bigs/product8_2.jpg}" /> <img
+									src="../../../resources/images/bigs/product8_3.jpg"
+									class="image_3" style="display: none" alt=""
+									th:src="@{/resources/images/bigs/product8_3.jpg}" /> <img
+									src="../../../resources/images/bigs/product8_1.jpg"
+									class="image_4" style="display: none" alt=""
+									th:src="@{/resources/images/bigs/product8_1.jpg}" />
+							</div>
+
+							<div class="clear"></div>
+
+							<div class="thumbnail" style="padding: 0px;">
+								<div class="thumb">
+									<a href="#" rel="1"> <img id="thumb_1" alt=""
+										th:attr="src=@{'/resources/images/thumbs/'+${productDetails.productImg1}}" />
+									</a>
+								</div>
+								<div class="thumb">
+									<a href="#" rel="2"> <img id="thumb_2" alt=""
+										th:attr="src=@{'/resources/images/thumbs/'+${productDetails.productImg2}}" />
+									</a>
+								</div>
+								<div class="thumb">
+									<a href="#" rel="3"> <img id="thumb_3" alt=""
+										th:attr="src=@{'/resources/images/thumbs/'+${productDetails.productImg3}}" />
+									</a>
+								</div>
+								<div class="thumb last">
+									<a href="#" rel="4"> <img id="thumb_4" alt=""
+										th:attr="src=@{'/resources/images/thumbs/'+${productDetails.productImg1}}" />
+									</a>
+								</div>
+							</div>
+						</section>
+
+					</div>
+					<div class="clear"></div>
+
+					<div class="details col-md-6">
+						<h3 class="product-title" th:text="${productDetails.productTitle}"></h3>
+						<div class="rating">
+							<div class="stars">
+								<span class="fa fa-star checked"></span> <span
+									class="fa fa-star checked"></span> <span
+									class="fa fa-star checked"></span> <span class="fa fa-star"></span>
+								<span class="fa fa-star"></span>
+							</div>
+							<span class="review-no">41 reviews</span>
+						</div>
+						<p class="product-description"
+							th:text="${productDetails.productDesc}"></p>
+						<p class="price-inr">
+							<b>&#8377; </b><b th:text="${productDetails.productPrice}"></b>
+						</p>
+						<div class="input-group plus-minus">
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-danger btn-number"
+									data-type="minus" data-field="quant[2]">
+									<span class="glyphicon glyphicon-minus"></span>
+								</button>
+							</span> <input type="text" name="quant[2]"
+								class="form-control input-number" value="1" min="1" max="99"
+								style="text-align: center;" /> <span class="input-group-btn">
+								<button type="button" class="btn btn-success btn-number"
+									data-type="plus" data-field="quant[2]">
+									<span class="glyphicon glyphicon-plus"></span>
+								</button>
+							</span>
+						</div>
+						<p class="vote">
+							<strong>91%</strong> of buyers enjoyed this product! <strong>(87
+								votes)</strong>
+						</p>
+						<!--  <h5 class="sizes">sizes:
+                            <span class="size" data-toggle="tooltip" title="small">s</span>
+                            <span class="size" data-toggle="tooltip" title="medium">m</span>
+                            <span class="size" data-toggle="tooltip" title="large">l</span>
+                            <span class="size" data-toggle="tooltip" title="xtra large">xl</span>
+                        </h5>
+                        <h5 class="colors">colors:
+                            <span class="color orange not-available" data-toggle="tooltip" title="Not In store"></span>
+                            <span class="color green"></span>
+                            <span class="color blue"></span>
+                        </h5> -->
+						<h4
+							style="width: 20%; float: left; text-transform: UPPERCASE; font-weight: bold;">PAY
+							:</h4>
+						<div class="action">
+
+							<span><img
+								src="../../../resources/images/quisk_pay_button.png"
+								th:src="@{/resources/images/quisk_pay_button.png}" height="70"
+								 onclick='submitForm()'/></span>
+							<!--  OR<span><img src="../../../resources/images/paypal.png" th:src="@{/resources/images/paypal.png}" height="70" /></span>OR<span>
+                          <img src="../../../resources/images/visa.png" height="70" th:src="@{/resources/images/visa.png}" /></span> -->
+
+
+						</div>
+						<div class="action">
+							<!--   <button class="add-to-cart btn btn-default" type="button">add to cart</button>
+              <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> -->
+						</div>
+
+						<div class="modal fade" id="myModal" role="dialog">
+							<div class="modal-dialog modal-sm">
+
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title" style="text-align: center;">
+											<img src="../../../resources/images/qlogo.png"
+												th:src="@{/resources/images/qlogo.png}" />
+										</h4>
+									</div>
+									<div class="modal-body" style="text-align: center;">
+										<h4>PAY</h4>
+										<div class="form-group">
+											<div class="icon-addon addon-lg">
+												<input type="text" placeholder="Mobile Number"
+													class="form-control" id="mobile" />
+											</div>
+
+										</div>
+										<div class="form-group">
+											<div class="icon-addon addon-lg">
+												<input type="text" placeholder="PIN" class="form-control"
+													id="PIN" />
+											</div>
+
+										</div>
+										<div class="form-group">
+											<button type="button" class="btn .btn-lg"
+												style="color: white; background: #b1d238; padding: 5px; width: 86px; font-size: 21px;">PAY</button>
+
+										</div>
+
+
+									</div>
+									<!-- <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div> -->
+								</div>
+
+							</div>
+						</div>
+
+
+
+					</div>
+				</div>
+			</div>
+			<div class="row specs">
+				<div class="col-md-12">
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" class="specsa"
+							href="#home">Specification</a></li>
+					</ul>
+
+					<div class="tab-content">
+						<div id="home" class="tab-pane fade in active">
+							<ul class="specsul">
+								<li th:each="productSpec : ${productDetails.productSpec}"
+									th:unless="${productDetails.productSpec == null}"
+									th:text="${productSpec}"></li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<hr></hr>
+	</div>
+	<!-- Close Main Content-->
+	
+	<!-- Quisk pay hidden form  -->
+	<form hidden="true"  method="post" th:action="${quiskPayUrl}"  name='quiskMerchantDetailsForm'>
+		<input id="callbackFunction" type="hidden" name="callbackURL"  value="" th:value="${callBackUrl}"/>
+		<input type="hidden" id="merchantKey" name="merchantKey" th:value="${merchantKey}"/>
+		<input type="hidden" id="amount" name="amount" value="" th:value="${productDetails.productPrice}" />
+		<input type="hidden" id="currency" name="currency" value="INR"/>
+		<input type="hidden" id="refId" name="refId" value="" th:value="${refId}"/>
+	</form>
+	<!-- Quisk pay hidden form  -->
+	
+	
+	<!-- Start Footer-->
+
+	<footer>
+		<!--/.footer-->
+
+		<div class="footer-bottom">
+			<div class="container">
+				<p class="pull-left">
+					<strong>© Online Shop 2017</strong>
+				</p>
+				<!-- <div class="pull-right">
+                <ul class="nav nav-pills payments">
+                    <li><i class="fa fa-cc-visa"></i></li>
+                    <li><i class="fa fa-cc-mastercard"></i></li>
+                    <li><i class="fa fa-cc-amex"></i></li>
+                    <li><i class="fa fa-cc-paypal"></i></li>
+                </ul> 
+            </div> -->
+			</div>
+		</div>
+		<!--/.footer-bottom-->
+	</footer>
+	<!-- Close Footer-->
+	<!-- <script src="../../../resources/js/digiavtaar.js"
+		th:src="@{/resources/js/digiavtaar.js}"></script> -->
+
+<script type="text/javascript">
+function submitForm() {
+	 // Fixes dual-screen position                         Most browsers      Firefox
+	 var w = 330,h=435;
+    var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+    var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+    var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+    var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+    var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+    var top = ((height / 2) - (h / 2)) + dualScreenTop;
+    
+    document.quiskMerchantDetailsForm.target = "login";
+    //child = window.open("", "login", "width=330,height=435,toolbar=-100");
+    child = window.open("", "login", 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+    
+    document.quiskMerchantDetailsForm.submit();
+}
+</script>
+
+</body>
+</html>
