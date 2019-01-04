@@ -4,14 +4,16 @@ pipeline {
     stages {
        
         stage('Example') {
-			if (env.BRANCH_NAME == 'master') {
-				echo 'I only execute on the master branch'
-			} else {
-				echo 'I execute elsewhere'
-			}
-			
-			for (int i=0; i < 5 ; i++) {
-					echo 'for '+ i
+			steps{
+				if (env.BRANCH_NAME == 'master') {
+					echo 'I only execute on the master branch'
+				} else {
+					echo 'I execute elsewhere'
+				}
+				
+				for (int i=0; i < 5 ; i++) {
+						echo 'for '+ i
+				}
 			}
 		}
     }
