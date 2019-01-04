@@ -5,6 +5,7 @@ pipeline {
        
         stage('Example') {
 			steps{
+			  script {
 				if (env.BRANCH_NAME == 'master') {
 					echo 'I only execute on the master branch'
 				} else {
@@ -14,6 +15,7 @@ pipeline {
 				for (int i=0; i < 5 ; i++) {
 						echo 'for '+ i
 				}
+			  }
 			}
 		}
     }
